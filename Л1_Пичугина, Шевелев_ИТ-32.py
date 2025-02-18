@@ -66,12 +66,13 @@ class SnakeGame:
         move_x, move_y = DIRECTIONS[self.direction]
         new_head = (head_x + move_x * CELL_SIZE, head_y + move_y * CELL_SIZE)
 
-        # Проверяем столкновение со стенами или собой
-        if (
-            new_head in self.snake or
-            new_head[0] < 0 or new_head[0] >= WIDTH or
-            new_head[1] < 0 or new_head[1] >= HEIGHT
-        ):
+        # Проверяем выход за границы и перемещаем на противоположную сторону
+        new_x = (new_head[0] + WIDTH) % WIDTH
+        new_y = (new_head[1] + HEIGHT) % HEIGHT
+        new_head = (new_x, new_y)
+
+        # Проверяем столкновение с собой
+        if new_head in self.snake:
             self.running = False
             self.show_game_over()
             return
@@ -115,7 +116,3 @@ if __name__ == "__main__":
     root = tk.Tk()
     game = SnakeGame(root)
     root.mainloop()
-
-
-
-    
